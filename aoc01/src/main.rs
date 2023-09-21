@@ -1,4 +1,5 @@
 use std::fs;
+use std::io::{self, Write};
 use std::path;
 use std::collections::HashSet;
 
@@ -10,7 +11,10 @@ fn part1(input: &String) -> Result<()> {
         frequency += line.parse::<i32>().unwrap();
     }
 
-    println!("Frequency is: {}", frequency);
+    // Using `writeln` rather than `println` https://github.com/BurntSushi/advent-of-code/issues/17
+    // In essense: `println` panics if there is an error, whereas `writeln` propagates the
+    // error
+    writeln!(io::stdout(), "Frequency is: {}", frequency)?;
     Ok(())
 }
 
@@ -23,7 +27,7 @@ fn part2(input: &String) -> Result<()> {
         for line in input.lines() {
             frequency += line.parse::<i32>().unwrap();
             if seen.contains(&frequency) {
-                println!("First frequency seen twice: {}", frequency);
+                writeln!(io::stdout(), "First frequency seen twice: {}", frequency)?;
                 return Ok(());
             }
             seen.insert(frequency);
