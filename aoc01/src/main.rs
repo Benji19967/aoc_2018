@@ -1,6 +1,4 @@
-use std::fs;
-use std::io::{self, Write};
-use std::path;
+use std::io::{self, Write, Read};
 use std::collections::HashSet;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -37,8 +35,8 @@ fn part2(input: &String) -> Result<()> {
 
 
 fn main() -> Result<()> {
-    let input_path: path::PathBuf = "input/input.txt".into();
-    let input = fs::read_to_string(input_path).unwrap();
+    let mut input = String::new();
+    io::stdin().read_to_string(&mut input)?;
 
     part1(&input)?;
     part2(&input)?;
