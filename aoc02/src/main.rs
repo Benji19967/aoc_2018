@@ -1,4 +1,5 @@
-use std::{io::{self, Write, Read}, collections::HashMap};
+use std::{io::{self, Write, Read, BufRead}, collections::HashMap};
+use std::iter::zip;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
@@ -32,10 +33,34 @@ fn part1(input: &String) -> Result<()> {
     Ok(())
 }
 
+fn part2(input: &String) -> Result<()> {
+    let mut words: Vec<String> = Vec::new();
+    for word in input.lines() {
+        words.push(word.to_string());
+    }
+    for (i, word) in words.iter().enumerate() {
+        for other_word in &words[i..] {
+            let mut diff_count = 0;
+            for (c1, c2) in zip(word.chars(), other_word.chars()) {
+                if c1 != c2 {
+                    diff_count += 1;
+                }
+            }
+            if diff_count == 1 {
+                writeln!(io::stdout(), "Word: {} Other word: {}", word, other_word)?;
+                return Ok(());
+            }
+        }
+    }
+
+    Ok(())
+}
+
 fn main() -> Result<()> {
     let mut input = String::new();
     io::stdin().read_to_string(&mut input)?;
 
     part1(&input)?;
+    part2(&input)?;
     Ok(())
 }
