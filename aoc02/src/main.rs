@@ -19,7 +19,7 @@ fn part1(input: &String) -> Result<()> {
         doubles += doubles_change;
         triples += triples_change;
     }
-    writeln!(io::stdout(), "Checkum is: {}", doubles * triples)?;
+    writeln!(io::stdout(), "Checksum is: {}", doubles * triples)?;
     Ok(())
 }
 
