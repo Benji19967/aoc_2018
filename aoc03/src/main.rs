@@ -100,15 +100,12 @@ impl<'a> Iterator for IterPoints<'a> {
     type Item = (u32, u32);
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.py == self.claim.y + self.claim.height {
-            return None;
-        }
         if self.px == self.claim.x + self.claim.width {
             self.px = self.claim.x;
             self.py += 1;
-            if self.py == self.claim.y + self.claim.height {
-                return None;
-            }
+        }
+        if self.py == self.claim.y + self.claim.height {
+            return None;
         }
         let current_point = Some((self.px, self.py));
         self.px += 1;
