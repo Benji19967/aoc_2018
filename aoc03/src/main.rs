@@ -31,7 +31,7 @@ fn main() -> Result<()> {
     }
 
     part1(&grid)?;
-    // part2(&input)?;
+    part2(&grid, claims)?;
     Ok(())
 }
 
@@ -47,25 +47,28 @@ fn parse_lines_into_claims(input: &str) -> Result<Vec<Claim>> {
 }
 
 fn populate_grid(claim: &Claim, grid: &mut Grid) {
-    for x in claim.x..claim.x + claim.width {
-        for y in claim.y..claim.y + claim.height {
-            *grid.entry((x, y)).or_default() += 1;
-        }
+    for (x, y) in claim.iter_points() {
+        *grid.entry((x, y)).or_default() += 1;
     }
 }
 
 fn part1(grid: &Grid) -> Result<()> {
     let count = grid.values().filter(|&&count| count >= 2).count();
-    writeln!(io::stdout(), "Number of claims with count of 2 or more: {}", count)?;
+    writeln!(
+        io::stdout(),
+        "Number of claims with count of 2 or more: {}",
+        count
+    )?;
     Ok(())
 }
 
-fn get_num_rows_and_cols(input: &str) -> (u32, u32) {
-    // let (mut max_rows, mut max_cols) = (0, 0);
-    // for line in input.lines() {
-    //     id, dist_left, dist_top, width, height = parse_line(&line);
-    // }
-    (0, 0)
+fn part2(grid: &Grid, claims: Vec<Claim>) -> Result<()> {
+    for claim in claims {
+        if claim.iter_points().all(|p| grid[&p] == 1) {
+            writeln!(io::stdout(), "Id of claim with no overlap: {}", claim.id)?;
+        }
+    }
+    Ok(())
 }
 
 #[derive(Debug)]
@@ -75,6 +78,42 @@ struct Claim {
     y: u32,
     width: u32,
     height: u32,
+}
+
+impl Claim {
+    fn iter_points(&self) -> IterPoints {
+        IterPoints {
+            claim: self,
+            px: self.x,
+            py: self.y,
+        }
+    }
+}
+
+struct IterPoints<'a> {
+    claim: &'a Claim,
+    px: u32,
+    py: u32,
+}
+
+impl<'a> Iterator for IterPoints<'a> {
+    type Item = (u32, u32);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.py == self.claim.y + self.claim.height {
+            return None;
+        }
+        if self.px == self.claim.x + self.claim.width {
+            self.px = self.claim.x;
+            self.py += 1;
+            if self.py == self.claim.y + self.claim.height {
+                return None;
+            }
+        }
+        let current_point = Some((self.px, self.py));
+        self.px += 1;
+        current_point
+    }
 }
 
 impl FromStr for Claim {
