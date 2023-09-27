@@ -38,3 +38,9 @@ export RAYON_NUM_THREADS=1
 ./target/release/aoc04 < input/input.txt  35.99s user 0.27s system 99% cpu 36.260 total
 ```
 
+## Comparing a similar Python implementation
+```bash
+python python/main.py  147.45s user 0.86s system 98% cpu 2:30.63 total
+```
+
+... roughly 5 times slower when compared to the single-threaded Rust version.
