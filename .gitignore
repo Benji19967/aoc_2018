@@ -15,3 +15,7 @@ Cargo.lock
 
 # VIM
 .vim
+
+# PYTHON
+env
+.poetry_venv

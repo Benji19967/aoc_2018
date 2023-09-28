@@ -40,6 +40,7 @@ export RAYON_NUM_THREADS=1
 
 ## Comparing a similar Python implementation
 ```bash
+source env/bin/activate
 python python/main.py  147.45s user 0.86s system 98% cpu 2:30.63 total
 ```
 
