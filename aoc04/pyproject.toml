@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "aoc04"
+version = "0.1.0"
+description = "Advent of code 2018 - 04"
+authors = [ "Benjamin Labrecque" ]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.4.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+pre-commit = "^3.2.2"
